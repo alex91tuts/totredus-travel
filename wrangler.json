@@ -8,7 +8,7 @@
         {
             "binding": "DB",
             "database_name": "totredus-travel-db",
-            "database_id": "REPLACE_WITH_YOUR_DATABASE_ID"
+            "database_id": "eccaaf05-80da-45d0-9c2e-36500e7878d2"
         }
     ]
 }
