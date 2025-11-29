@@ -88,7 +88,7 @@ import type { Metadata } from 'next'
 
 export async function generateMetadata(): Promise<Metadata> {
     const t = getTranslations('ro')
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://locuirivizitat.workers.dev'
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toplocuri.ro'
 
     return {
         title: `${t.destinations.pageTitle} | Travel Blog`,

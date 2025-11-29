@@ -18,12 +18,12 @@ function normalizeLocation(value: string): string {
 
 // Convert normalized location to lowercase slug
 function locationToSlug(value: string): string {
-  return normalizeLocation(value).toLowerCase()
+  return normalizeLocation(value).toLowerCase().replace(/\s+/g, '-')
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Use environment variable or fallback
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://locuirivizitat.workers.dev'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toplocuri.ro'
 
   const currentDate = new Date()
 

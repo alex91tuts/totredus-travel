@@ -136,7 +136,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ||
-      (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locuirivizitat.workers.dev')
+      (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://toplocuri.ro')
     return {
       title: `${locationName} | Travel Blog`,
       description: `${posts.length} ${posts.length === 1 ? 'article' : 'articles'} about ${locationName}`,

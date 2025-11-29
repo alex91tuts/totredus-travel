@@ -13,7 +13,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params
   const t = getTranslations(locale)
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://locuirivizitat.workers.dev'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://toplocuri.ro'
   const url = locale === 'ro' ? `${siteUrl}/` : `${siteUrl}/${locale}`
 
   return {
