@@ -1,0 +1,10 @@
+-- Migration number: 0001 	 2024-11-29T13:45:00.000Z
+CREATE TABLE IF NOT EXISTS messages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  message TEXT NOT NULL,
+  locale TEXT DEFAULT 'en',
+  created_at TEXT NOT NULL,
+  read INTEGER DEFAULT 0
+);

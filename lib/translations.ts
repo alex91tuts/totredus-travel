@@ -183,6 +183,10 @@ export const translations = {
         email: 'Email',
         message: 'Mesaj',
         send: 'Trimite Mesajul',
+        sending: 'Se trimite...',
+        success: 'Mesajul tău a fost trimis cu succes!',
+        error: 'A apărut o eroare. Te rugăm să încerci din nou.',
+        consent: 'Trimițând formularul, ești de acord să te contactăm pentru detalii suplimentare.',
       },
       highlights: {
         title: 'Când ne contactezi',
@@ -469,6 +473,10 @@ export const translations = {
         email: 'Email',
         message: 'Message',
         send: 'Send Message',
+        sending: 'Sending...',
+        success: 'Your message has been sent successfully!',
+        error: 'An error occurred. Please try again.',
+        consent: 'By submitting the form you agree to be contacted with additional details.',
       },
       highlights: {
         title: 'When you reach out',
