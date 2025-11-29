@@ -136,11 +136,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
     }
 
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ||
-      (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : undefined)
-
-    if (!siteUrl) {
-      throw new Error('NEXT_PUBLIC_SITE_URL environment variable must be set in production')
-    }
+      (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locuirivizitat.workers.dev')
     return {
       title: `${locationName} | Travel Blog`,
       description: `${posts.length} ${posts.length === 1 ? 'article' : 'articles'} about ${locationName}`,
@@ -162,11 +158,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : undefined)
-
-  if (!siteUrl) {
-    throw new Error('NEXT_PUBLIC_SITE_URL environment variable must be set in production')
-  }
+    (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locuirivizitat.workers.dev')
 
   const url = `${siteUrl}/${locale}/${slug}`
   const imageUrl = post.frontmatter.featuredImage?.startsWith('http')
@@ -343,11 +335,7 @@ export default async function PostPage({ params }: { params: Promise<{ locale: L
 
   // Generate JSON-LD structured data
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : undefined)
-
-  if (!siteUrl) {
-    throw new Error('NEXT_PUBLIC_SITE_URL environment variable must be set in production')
-  }
+    (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locuirivizitat.workers.dev')
 
   const url = `${siteUrl}/${locale}/${slug}`
   const imageUrl = post.frontmatter.featuredImage?.startsWith('http')
