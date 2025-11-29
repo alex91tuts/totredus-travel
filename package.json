@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "extract-locations": "tsx scripts/extract-locations.ts",
-    "convert-image": "tsx scripts/convert-image-to-webp.ts"
+    "convert-image": "tsx scripts/convert-image-to-webp.ts",
+    "ship": "npm run build && npx wrangler deploy && git add . && git commit -m \"chore: automated deployment\" && git push"
   },
   "dependencies": {
     "@fontsource/montserrat": "^5.2.8",

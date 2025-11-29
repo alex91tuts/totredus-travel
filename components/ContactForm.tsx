@@ -35,6 +35,8 @@ export default function ContactForm({ locale, translations }: ContactFormProps) 
             timestamp: new Date().toISOString(),
         }
 
+        console.log('Submitting form data:', data)
+
         try {
             const response = await fetch('/api/contact', {
                 method: 'POST',
@@ -44,9 +46,16 @@ export default function ContactForm({ locale, translations }: ContactFormProps) 
                 body: JSON.stringify(data),
             })
 
+            console.log('Response status:', response.status)
+
             if (!response.ok) {
-                throw new Error('Failed to send message')
+                const errorData = await response.json().catch(() => ({}))
+                console.error('Server error:', errorData)
+                throw new Error(errorData.error || 'Failed to send message')
             }
+
+            const result = await response.json()
+            console.log('Success result:', result)
 
             setStatus('success')
             // Reset form
@@ -54,7 +63,7 @@ export default function ContactForm({ locale, translations }: ContactFormProps) 
         } catch (error) {
             console.error('Error sending message:', error)
             setStatus('error')
-            setErrorMessage(translations.error)
+            setErrorMessage(error instanceof Error ? error.message : translations.error)
         }
     }
 
