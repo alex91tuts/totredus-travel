@@ -23,12 +23,9 @@ function locationToSlug(value: string): string {
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Use environment variable or fallback for development
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ||
-    (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : undefined)
+  // Use environment variable or fallback
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://totredus-travel.pages.dev'
 
-  if (!siteUrl) {
-    throw new Error('NEXT_PUBLIC_SITE_URL environment variable must be set in production')
-  }
 
   const currentDate = new Date()
 
