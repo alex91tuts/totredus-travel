@@ -1,0 +1,107 @@
+{
+  "cities": [
+    "AGAPIA",
+    "BICAZ",
+    "BRASOV",
+    "BUCHAREST",
+    "BUCURESTI",
+    "CEAHLAU",
+    "CESKY KRUMLOV",
+    "GRECIA",
+    "HARGHITA",
+    "ISTANBUL",
+    "LISABONA",
+    "MILANO",
+    "PIATRA NEAMT",
+    "PRAGA",
+    "PRAGUE",
+    "PRAID",
+    "RASNOV",
+    "SOVATA",
+    "TARGU NEAMT",
+    "TIMISOARA"
+  ],
+  "countries": [
+    "CEHIA",
+    "CROATIA",
+    "GRECIA",
+    "ITALIA",
+    "PORTUGALIA",
+    "ROMANIA",
+    "TURCIA"
+  ],
+  "cityMap": {
+    "ROMANIA_BUCURESTI": {
+      "tara": "ROMANIA",
+      "oras": "BUCURESTI"
+    },
+    "ROMANIA_SOVATA": {
+      "tara": "ROMANIA",
+      "oras": "SOVATA"
+    },
+    "ROMANIA_TIMISOARA": {
+      "tara": "ROMANIA",
+      "oras": "TIMISOARA"
+    },
+    "CEHIA_CESKY KRUMLOV": {
+      "tara": "CEHIA",
+      "oras": "CESKY KRUMLOV"
+    },
+    "CEHIA_PRAGA": {
+      "tara": "CEHIA",
+      "oras": "PRAGA"
+    },
+    "ROMANIA_RASNOV": {
+      "tara": "ROMANIA",
+      "oras": "RASNOV"
+    },
+    "ROMANIA_BICAZ": {
+      "tara": "ROMANIA",
+      "oras": "BICAZ"
+    },
+    "ROMANIA_BRASOV": {
+      "tara": "ROMANIA",
+      "oras": "BRASOV"
+    },
+    "TURCIA_ISTANBUL": {
+      "tara": "TURCIA",
+      "oras": "ISTANBUL"
+    },
+    "ROMANIA_HARGHITA": {
+      "tara": "ROMANIA",
+      "oras": "HARGHITA"
+    },
+    "PORTUGALIA_LISABONA": {
+      "tara": "PORTUGALIA",
+      "oras": "LISABONA"
+    },
+    "GRECIA_GRECIA": {
+      "tara": "GRECIA",
+      "oras": "GRECIA"
+    },
+    "ITALIA_MILANO": {
+      "tara": "ITALIA",
+      "oras": "MILANO"
+    },
+    "ROMANIA_PRAID": {
+      "tara": "ROMANIA",
+      "oras": "PRAID"
+    },
+    "ROMANIA_AGAPIA": {
+      "tara": "ROMANIA",
+      "oras": "AGAPIA"
+    },
+    "ROMANIA_CEAHLAU": {
+      "tara": "ROMANIA",
+      "oras": "CEAHLAU"
+    },
+    "ROMANIA_PIATRA NEAMT": {
+      "tara": "ROMANIA",
+      "oras": "PIATRA NEAMT"
+    },
+    "ROMANIA_TARGU NEAMT": {
+      "tara": "ROMANIA",
+      "oras": "TARGU NEAMT"
+    }
+  }
+}

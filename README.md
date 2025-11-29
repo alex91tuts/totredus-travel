@@ -75,8 +75,7 @@ colors: {
 
 Conținutul destinațiilor poate fi editat în:
 - `components/Destinations.tsx` - pentru pagina principală
-- `app/destinations/page.tsx` - pentru pagina de destinații
-- `app/destinations/[id]/page.tsx` - pentru detaliile destinațiilor
+- `app/[locale]/destinations/page.tsx` - pentru pagina de destinații
 
 ## 🛠️ Tehnologii
 

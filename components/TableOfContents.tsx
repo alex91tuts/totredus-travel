@@ -74,7 +74,7 @@ export default function TableOfContents({ items, locale, variant = 'desktop' }: 
         {/* Dropdown overlay */}
         {isOpen && (
           <div className="lg:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setIsOpen(false)}>
-            <div 
+            <div
               className="absolute top-14 left-2 right-2 bg-card border border-border rounded-lg shadow-xl max-h-[70vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
@@ -113,8 +113,8 @@ export default function TableOfContents({ items, locale, variant = 'desktop' }: 
   }
 
   return (
-    <aside className="hidden lg:block w-[200px] flex-shrink-0 sticky top-8 self-start">
-      <div className="bg-card rounded-lg p-4 border border-border">
+    <aside className="hidden lg:block w-[200px] flex-shrink-0 sticky top-8 self-start max-h-[calc(100vh-4rem)]">
+      <div className="bg-card rounded-lg p-4 border border-border max-h-full overflow-y-auto">
         <h3 className="text-sm font-bold mb-3 text-foreground">
           {locale === 'ro' ? 'CUPRINS' : 'TABLE OF CONTENTS'}
         </h3>

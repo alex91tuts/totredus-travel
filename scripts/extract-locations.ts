@@ -1,0 +1,178 @@
+import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
+
+interface LocationData {
+  cities: string[]
+  countries: string[]
+  cityMap: Record<string, { tara: string; oras: string }>
+}
+
+// Normalize string: remove diacritics, convert to uppercase, trim
+function normalizeLocation(value: string): string {
+  if (!value || typeof value !== 'string') return ''
+
+  // Remove diacritics (accents)
+  let normalized = value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Remove combining diacritical marks
+    .trim()
+    .toUpperCase()
+
+  // Ignore specific values
+  const IGNORED_VALUES = ['MAI MULTE', 'ALTELE', 'DE VIZITAT']
+  if (IGNORED_VALUES.includes(normalized)) return ''
+
+  // Normalization map for inconsistencies
+  const NORMALIZATION_MAP: Record<string, string> = {
+    'REPUBLICA CEHA': 'CEHIA',
+    'UK': 'MAREA BRITANIE',
+    'ENGLAND': 'MAREA BRITANIE',
+    'HOLLAND': 'OLANDA',
+    'THE NETHERLANDS': 'OLANDA'
+  }
+
+  if (NORMALIZATION_MAP[normalized]) {
+    normalized = NORMALIZATION_MAP[normalized]
+  }
+
+  return normalized
+}
+
+function extractLocations(): LocationData {
+  const postsDir = path.join(process.cwd(), 'content', 'posts')
+  const cities = new Set<string>()
+  const countries = new Set<string>()
+  const cityMap: Record<string, { tara: string; oras: string }> = {}
+
+  // Map to track original values for normalized keys
+  const normalizedToOriginal: Record<string, { tara: string; oras: string }> = {}
+
+  // Recursively find all .mdx files
+  function findMdxFiles(dir: string): string[] {
+    const files: string[] = []
+    const entries = fs.readdirSync(dir, { withFileTypes: true })
+
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry.name)
+      if (entry.isDirectory()) {
+        files.push(...findMdxFiles(fullPath))
+      } else if (entry.isFile() && entry.name.endsWith('.mdx')) {
+        files.push(fullPath)
+      }
+    }
+
+    return files
+  }
+
+  const mdxFiles = findMdxFiles(postsDir)
+
+  console.log(`Found ${mdxFiles.length} MDX files to process...`)
+
+  for (const filePath of mdxFiles) {
+    try {
+      const fileContents = fs.readFileSync(filePath, 'utf8')
+      const { data } = matter(fileContents)
+
+      // Extract tara, oras, and city (oras for RO, city for EN)
+      const tara = data.tara || data.country || ''
+      const oras = data.oras || ''
+      const city = data.city || '' // Also extract city for EN locale
+
+      // Normalize values (remove diacritics, uppercase)
+      const normalizedTara = normalizeLocation(tara)
+      const normalizedOras = normalizeLocation(oras)
+      const normalizedCity = normalizeLocation(city)
+
+      // Add to sets if not empty
+      if (normalizedTara) {
+        countries.add(normalizedTara)
+      }
+
+      // Add both oras and city to cities set (they might be different)
+      if (normalizedOras) {
+        cities.add(normalizedOras)
+      }
+      if (normalizedCity && normalizedCity !== normalizedOras) {
+        cities.add(normalizedCity)
+      }
+
+      // Create a unique key for the location using normalized values
+      if (normalizedTara && (normalizedOras || normalizedCity)) {
+        const locationKey = `${normalizedTara}_${normalizedOras || normalizedCity}`
+
+        // Store original values (keep first occurrence or most complete)
+        if (!normalizedToOriginal[locationKey] ||
+          (!normalizedToOriginal[locationKey].tara && tara) ||
+          (!normalizedToOriginal[locationKey].oras && (oras || city))) {
+          normalizedToOriginal[locationKey] = {
+            tara: tara || normalizedToOriginal[locationKey]?.tara || '',
+            oras: oras || city || normalizedToOriginal[locationKey]?.oras || '',
+          }
+        }
+      }
+    } catch (error) {
+      console.error(`Error processing file ${filePath}:`, error)
+    }
+  }
+
+  // Build final cityMap with normalized keys but original values
+  for (const [key, value] of Object.entries(normalizedToOriginal)) {
+    cityMap[key] = {
+      tara: normalizeLocation(value.tara),
+      oras: normalizeLocation(value.oras),
+    }
+  }
+
+  return {
+    cities: Array.from(cities).sort(),
+    countries: Array.from(countries).sort(),
+    cityMap,
+  }
+}
+
+function main() {
+  console.log('Extracting locations from posts...')
+  const locationData = extractLocations()
+
+  // Create output directory if it doesn't exist
+  const outputDir = path.join(process.cwd(), 'lib', 'generated')
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true })
+  }
+
+  // Write JSON file
+  const jsonPath = path.join(outputDir, 'locations.json')
+  fs.writeFileSync(jsonPath, JSON.stringify(locationData, null, 2), 'utf8')
+  console.log(`✓ Written locations to ${jsonPath}`)
+
+  // Write TypeScript file for easier imports
+  const tsPath = path.join(outputDir, 'locations.ts')
+  const tsContent = `// This file is auto-generated by scripts/extract-locations.ts
+// Do not edit manually - run 'npm run extract-locations' to regenerate
+
+export interface LocationEntry {
+  tara: string
+  oras: string
+}
+
+export const locations = ${JSON.stringify(locationData, null, 2)} as const
+
+export const cities = locations.cities
+export const countries = locations.countries
+export const cityMap: Record<string, LocationEntry> = locations.cityMap
+`
+  fs.writeFileSync(tsPath, tsContent, 'utf8')
+  console.log(`✓ Written TypeScript definitions to ${tsPath}`)
+
+  // Print summary
+  console.log('\n📊 Summary:')
+  console.log(`  Countries: ${locationData.countries.length}`)
+  console.log(`  Cities: ${locationData.cities.length}`)
+  console.log(`  Location entries: ${Object.keys(locationData.cityMap).length}`)
+  console.log('\n  Countries:', locationData.countries.join(', '))
+  console.log('\n  Cities:', locationData.cities.join(', '))
+}
+
+main()
+

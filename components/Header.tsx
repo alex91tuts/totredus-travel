@@ -1,39 +1,95 @@
-'use client'
-
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
 import LanguageSwitcher from './LanguageSwitcher'
 import ThemeSwitcher from './ThemeSwitcher'
+import MobileMenuWrapper from './MobileMenuWrapper'
+import DestinationsDropdown from './DestinationsDropdown'
 import { getTranslations, type Locale } from '@/lib/translations'
+import { getAllPosts } from '@/lib/posts'
+
+// Normalize location function (same as in extract-locations.ts)
+function normalizeLocation(value: string): string {
+  if (!value || typeof value !== 'string') return ''
+  return value
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .toUpperCase()
+}
+
+// Convert normalized location to lowercase slug
+function locationToSlug(value: string): string {
+  return normalizeLocation(value).toLowerCase().replace(/\s+/g, '-')
+}
+
+// Convert ALL CAPS to Title Case
+function toTitleCase(str: string): string {
+  if (!str) return ''
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
+// Get unique countries from posts
+function getCountriesFromPosts(locale: Locale): { name: string; slug: string }[] {
+  const allPosts = getAllPosts(locale)
+  const countryMap = new Map<string, string>()
+
+  allPosts.forEach(post => {
+    const country = post.frontmatter.tara || post.frontmatter.country
+    if (!country) return
+
+    const normalizedCountry = normalizeLocation(country)
+    if (!countryMap.has(normalizedCountry)) {
+      // Prefer the original country name from posts for better localization
+      // Convert to title case if it's all caps
+      const countryName = country === country.toUpperCase() && country === country.toLowerCase() ? country :
+        country === country.toUpperCase() ? toTitleCase(country) : country
+      countryMap.set(normalizedCountry, countryName)
+    }
+  })
+
+  // Convert to array and sort alphabetically
+  return Array.from(countryMap.entries())
+    .map(([normalized, name]) => ({
+      name: toTitleCase(name),
+      slug: locationToSlug(name)
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name))
+}
 
 export default function Header({ locale }: { locale: Locale }) {
   const t = getTranslations(locale)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const countries = getCountriesFromPosts(locale)
 
   return (
     <header className="relative bg-background border-b border-border shadow-sm w-full">
-      <nav className="mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-7xl w-full">
+      <nav className="relative mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-7xl w-full">
         <div className="flex items-center justify-between">
           <Link href={`/${locale}`} className="flex items-center gap-2 flex-shrink-0 hover:opacity-80 transition-opacity">
-            <Image 
-              src="/logo.webp" 
-              alt="TravelBlog" 
-              width={160} 
-              height={40} 
+            <Image
+              src="/logo.webp"
+              alt="TravelBlog"
+              width={160}
+              height={40}
               className="h-8 md:h-10 w-auto"
               priority
             />
           </Link>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             <Link href={`/${locale}`} className="text-foreground hover:text-primary transition-colors whitespace-nowrap">
               {t.nav.home}
             </Link>
-            <Link href={`/${locale}/destinations`} className="text-foreground hover:text-primary transition-colors whitespace-nowrap">
-              {t.nav.destinations}
-            </Link>
+            <DestinationsDropdown
+              locale={locale}
+              countries={countries}
+              destinationsLabel={t.nav.destinations}
+              allDestinationsLabel={locale === 'ro' ? 'Toate destinațiile' : 'All destinations'}
+            />
             <Link href={`/${locale}/about`} className="text-foreground hover:text-primary transition-colors whitespace-nowrap">
               {t.nav.about}
             </Link>
@@ -41,72 +97,18 @@ export default function Header({ locale }: { locale: Locale }) {
               {t.nav.contact}
             </Link>
           </div>
-          
+
           {/* Right side controls */}
           <div className="flex items-center space-x-2 md:space-x-4">
             <div className="hidden sm:flex items-center space-x-2">
               <LanguageSwitcher />
               <ThemeSwitcher />
             </div>
-            
-            {/* Mobile menu button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 rounded-lg text-foreground hover:bg-muted transition-colors"
-              aria-label="Toggle menu"
-            >
-              {isMenuOpen ? (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
+
+            {/* Mobile menu button and navigation */}
+            <MobileMenuWrapper locale={locale} countries={countries} t={t} />
           </div>
         </div>
-        
-        {/* Mobile Navigation */}
-        {isMenuOpen && (
-          <div className="md:hidden mt-4 pt-4 border-t border-border space-y-2">
-            <Link 
-              href={`/${locale}`} 
-              className="block py-2 text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t.nav.home}
-            </Link>
-            <Link 
-              href={`/${locale}/destinations`} 
-              className="block py-2 text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t.nav.destinations}
-            </Link>
-            <Link 
-              href={`/${locale}/about`} 
-              className="block py-2 text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t.nav.about}
-            </Link>
-            <Link 
-              href={`/${locale}/contact`} 
-              className="block py-2 text-foreground hover:text-primary transition-colors"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {t.nav.contact}
-            </Link>
-            
-            {/* Mobile controls */}
-            <div className="sm:hidden flex items-center gap-2 pt-4 border-t border-border">
-              <LanguageSwitcher />
-              <ThemeSwitcher />
-            </div>
-          </div>
-        )}
       </nav>
     </header>
   )

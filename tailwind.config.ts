@@ -94,6 +94,18 @@ const config: Config = {
     'xl:grid-cols-5',
     'aspect-square',
     'sm:col-span-2',
+    // Mobile menu classes
+    'md:hidden',
+    'fixed',
+    'absolute',
+    'left-0',
+    'right-0',
+    'inset-x-0',
+    'top-full',
+    'w-screen',
+    'z-50',
+    'rotate-180',
+    'top-[73px]',
   ],
   // --- Sfârșitul soluției ---
 }
