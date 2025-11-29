@@ -24,7 +24,7 @@ function locationToSlug(value: string): string {
 export default function sitemap(): MetadataRoute.Sitemap {
   // Use environment variable or fallback for development
   // Use environment variable or fallback
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://totredus-travel.pages.dev'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://locuirivizitat.workers.dev'
 
 
   const currentDate = new Date()
