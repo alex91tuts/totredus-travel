@@ -23,10 +23,11 @@ export default function ContactForm({ locale, translations }: ContactFormProps) 
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        const form = e.currentTarget // Capture form reference immediately
         setStatus('loading')
         setErrorMessage('')
 
-        const formData = new FormData(e.currentTarget)
+        const formData = new FormData(form)
         const data = {
             name: formData.get('name'),
             email: formData.get('email'),
@@ -58,8 +59,8 @@ export default function ContactForm({ locale, translations }: ContactFormProps) 
             console.log('Success result:', result)
 
             setStatus('success')
-            // Reset form
-            e.currentTarget.reset()
+            // Reset form using the captured reference
+            form.reset()
         } catch (error) {
             console.error('Error sending message:', error)
             setStatus('error')
