@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }))
+  return locales.filter((locale) => locale !== 'ro').map((locale) => ({ locale }))
 }
 
 export default async function AboutPage({ params }: { params: Promise<{ locale: Locale }> }) {

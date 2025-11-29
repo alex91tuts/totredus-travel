@@ -81,7 +81,7 @@ function parseDate(dateInput: string | Date | undefined | null): Date {
 export async function generateStaticParams() {
   const params: Array<{ locale: Locale; slug: string }> = []
 
-  locales.forEach((locale) => {
+  locales.filter(locale => locale !== 'ro').forEach((locale) => {
     // Add all post slugs
     const slugs = getAllPostSlugs(locale)
     slugs.forEach((slug) => {
@@ -160,7 +160,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locuirivizitat.workers.dev')
 
-  const url = `${siteUrl}/${locale}/${slug}`
+  const url = locale === 'ro' ? `${siteUrl}/${slug}` : `${siteUrl}/${locale}/${slug}`
   const imageUrl = post.frontmatter.featuredImage?.startsWith('http')
     ? post.frontmatter.featuredImage
     : `${siteUrl}${post.frontmatter.featuredImage || '/images/posts/default.jpg'}`
@@ -208,7 +208,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
     alternates: {
       canonical: url,
       languages: {
-        'ro': `${siteUrl}/ro/${slug}`,
+        'ro': `${siteUrl}/${slug}`,
         'en': `${siteUrl}/en/${slug}`,
       },
     },

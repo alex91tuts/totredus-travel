@@ -119,6 +119,14 @@ export default async function CitiesAttractions({ locale }: { locale: Locale }) 
   // Sort cities alphabetically
   citiesData.sort((a, b) => a.city.localeCompare(b.city))
 
+  // Helper to generate localized path
+  const getPath = (path: string) => {
+    if (locale === 'ro') {
+      return path
+    }
+    return `/${locale}${path}`
+  }
+
   return (
     <section className="py-12 md:py-16 bg-background">
       <div className="container mx-auto px-4 space-y-12 md:space-y-16">
@@ -146,7 +154,7 @@ export default async function CitiesAttractions({ locale }: { locale: Locale }) 
               {/* City title with arrow and link */}
               <div className="flex items-center gap-3">
                 <Link
-                  href={`/${locale}/${locationToSlug(cityData.city)}`}
+                  href={getPath(`/${locationToSlug(cityData.city)}`)}
                   className="text-3xl md:text-4xl font-bold text-foreground hover:text-primary transition-colors flex items-center gap-3 group uppercase"
                 >
                   {cityData.city}
@@ -173,7 +181,7 @@ export default async function CitiesAttractions({ locale }: { locale: Locale }) 
                     return (
                       <Link
                         key={post.frontmatter.slug}
-                        href={`/${locale}/${post.frontmatter.slug}`}
+                        href={getPath(`/${post.frontmatter.slug}`)}
                         className="flex-shrink-0 w-64 md:w-auto group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl"
                       >
                         <div className="relative h-80 overflow-hidden">
@@ -229,7 +237,7 @@ export default async function CitiesAttractions({ locale }: { locale: Locale }) 
               {/* See more link */}
               <div className="flex justify-start">
                 <Link
-                  href={`/${locale}/${locationToSlug(cityData.city)}`}
+                  href={getPath(`/${locationToSlug(cityData.city)}`)}
                   className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors group"
                 >
                   {locale === 'ro' ? 'Vezi mai mult' : 'See more'}
@@ -250,4 +258,3 @@ export default async function CitiesAttractions({ locale }: { locale: Locale }) 
     </section>
   )
 }
-

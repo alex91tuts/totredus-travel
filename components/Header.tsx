@@ -64,11 +64,19 @@ export default function Header({ locale }: { locale: Locale }) {
   const t = getTranslations(locale)
   const countries = getCountriesFromPosts(locale)
 
+  // Helper to generate localized path
+  const getPath = (path: string) => {
+    if (locale === 'ro') {
+      return path
+    }
+    return `/${locale}${path}`
+  }
+
   return (
     <header className="relative bg-background border-b border-border shadow-sm w-full">
       <nav className="relative mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-7xl w-full">
         <div className="flex items-center justify-between">
-          <Link href={`/${locale}`} className="flex items-center gap-2 flex-shrink-0 hover:opacity-80 transition-opacity">
+          <Link href={getPath('/')} className="flex items-center gap-2 flex-shrink-0 hover:opacity-80 transition-opacity">
             <Image
               src="/logo.webp"
               alt="TravelBlog"
@@ -81,7 +89,7 @@ export default function Header({ locale }: { locale: Locale }) {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
-            <Link href={`/${locale}`} className="text-foreground hover:text-primary transition-colors whitespace-nowrap">
+            <Link href={getPath('/')} className="text-foreground hover:text-primary transition-colors whitespace-nowrap">
               {t.nav.home}
             </Link>
             <DestinationsDropdown
@@ -90,10 +98,10 @@ export default function Header({ locale }: { locale: Locale }) {
               destinationsLabel={t.nav.destinations}
               allDestinationsLabel={locale === 'ro' ? 'Toate destinațiile' : 'All destinations'}
             />
-            <Link href={`/${locale}/about`} className="text-foreground hover:text-primary transition-colors whitespace-nowrap">
+            <Link href={getPath('/about')} className="text-foreground hover:text-primary transition-colors whitespace-nowrap">
               {t.nav.about}
             </Link>
-            <Link href={`/${locale}/contact`} className="text-foreground hover:text-primary transition-colors whitespace-nowrap">
+            <Link href={getPath('/contact')} className="text-foreground hover:text-primary transition-colors whitespace-nowrap">
               {t.nav.contact}
             </Link>
           </div>
@@ -113,4 +121,3 @@ export default function Header({ locale }: { locale: Locale }) {
     </header>
   )
 }
-

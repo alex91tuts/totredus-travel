@@ -23,13 +23,21 @@ interface MobileMenuWrapperProps {
 export default function MobileMenuWrapper({ locale, countries, t }: MobileMenuWrapperProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+  // Helper to generate localized path
+  const getPath = (path: string) => {
+    if (locale === 'ro') {
+      return path
+    }
+    return `/${locale}${path}`
+  }
+
   return (
     <>
       <MobileMenuButton isOpen={isMenuOpen} onToggle={() => setIsMenuOpen(!isMenuOpen)} />
       <MobileMenuContainer isOpen={isMenuOpen}>
         <div className="pt-4 space-y-2">
-          <Link 
-            href={`/${locale}`} 
+          <Link
+            href={getPath('/')}
             className="block py-2 text-foreground hover:text-primary transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
@@ -37,8 +45,8 @@ export default function MobileMenuWrapper({ locale, countries, t }: MobileMenuWr
           </Link>
           <div className="py-2">
             <div className="text-foreground font-medium mb-1">{t.nav.destinations}</div>
-            <Link 
-              href={`/${locale}/destinations`} 
+            <Link
+              href={getPath('/destinations')}
               className="block py-2 pl-4 text-muted-foreground hover:text-primary transition-colors"
               onClick={() => setIsMenuOpen(false)}
             >
@@ -47,7 +55,7 @@ export default function MobileMenuWrapper({ locale, countries, t }: MobileMenuWr
             {countries.map((country) => (
               <Link
                 key={country.slug}
-                href={`/${locale}/${country.slug}`}
+                href={getPath(`/${country.slug}`)}
                 className="block py-2 pl-4 text-muted-foreground hover:text-primary transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -55,21 +63,21 @@ export default function MobileMenuWrapper({ locale, countries, t }: MobileMenuWr
               </Link>
             ))}
           </div>
-          <Link 
-            href={`/${locale}/about`} 
+          <Link
+            href={getPath('/about')}
             className="block py-2 text-foreground hover:text-primary transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
             {t.nav.about}
           </Link>
-          <Link 
-            href={`/${locale}/contact`} 
+          <Link
+            href={getPath('/contact')}
             className="block py-2 text-foreground hover:text-primary transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
             {t.nav.contact}
           </Link>
-          
+
           {/* Mobile controls */}
           <div className="sm:hidden flex items-center gap-2 pt-4 border-t border-border">
             <LanguageSwitcher />
@@ -80,4 +88,3 @@ export default function MobileMenuWrapper({ locale, countries, t }: MobileMenuWr
     </>
   )
 }
-

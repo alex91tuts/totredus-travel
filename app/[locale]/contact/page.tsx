@@ -5,7 +5,7 @@ import { getTranslations, type Locale, locales } from '@/lib/translations'
 import ContactForm from '@/components/ContactForm'
 
 export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }))
+  return locales.filter((locale) => locale !== 'ro').map((locale) => ({ locale }))
 }
 
 export default async function ContactPage({ params }: { params: Promise<{ locale: Locale }> }) {

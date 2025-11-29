@@ -11,9 +11,9 @@ interface DestinationsDropdownProps {
   allDestinationsLabel: string
 }
 
-export default function DestinationsDropdown({ 
-  locale, 
-  countries, 
+export default function DestinationsDropdown({
+  locale,
+  countries,
   destinationsLabel,
   allDestinationsLabel
 }: DestinationsDropdownProps) {
@@ -36,6 +36,14 @@ export default function DestinationsDropdown({
     }
   }, [isOpen])
 
+  // Helper to generate localized path
+  const getPath = (path: string) => {
+    if (locale === 'ro') {
+      return path
+    }
+    return `/${locale}${path}`
+  }
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -43,20 +51,20 @@ export default function DestinationsDropdown({
         className="text-foreground hover:text-primary transition-colors whitespace-nowrap flex items-center gap-1"
       >
         {destinationsLabel}
-        <svg 
+        <svg
           className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          fill="none" 
-          stroke="currentColor" 
+          fill="none"
+          stroke="currentColor"
           viewBox="0 0 24 24"
         >
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
         </svg>
       </button>
-      
+
       {isOpen && (
         <div className="absolute top-full left-0 mt-2 w-48 bg-background border border-border rounded-lg shadow-lg z-50 py-2">
           <Link
-            href={`/${locale}/destinations`}
+            href={getPath('/destinations')}
             className="block px-4 py-2 text-foreground hover:bg-muted transition-colors"
             onClick={() => setIsOpen(false)}
           >
@@ -66,7 +74,7 @@ export default function DestinationsDropdown({
           {countries.map((country) => (
             <Link
               key={country.slug}
-              href={`/${locale}/${country.slug}`}
+              href={getPath(`/${country.slug}`)}
               className="block px-4 py-2 text-foreground hover:bg-muted transition-colors"
               onClick={() => setIsOpen(false)}
             >
@@ -78,4 +86,3 @@ export default function DestinationsDropdown({
     </div>
   )
 }
-

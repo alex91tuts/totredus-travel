@@ -22,10 +22,8 @@ function locationToSlug(value: string): string {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Use environment variable or fallback for development
   // Use environment variable or fallback
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://locuirivizitat.workers.dev'
-
 
   const currentDate = new Date()
 
@@ -87,13 +85,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
       continue
     }
 
+    // Determine path prefix based on locale
+    const prefix = locale === 'ro' ? '' : `/${locale}`
+
     // Home page - highest priority
-    addUrl(`/${locale}`, currentDate, 'daily', locale === defaultLocale ? 1.0 : 0.9)
+    addUrl(`${prefix}/`, currentDate, 'daily', locale === defaultLocale ? 1.0 : 0.9)
 
     // Static pages
-    addUrl(`/${locale}/about`, currentDate, 'monthly', 0.7)
-    addUrl(`/${locale}/contact`, currentDate, 'monthly', 0.7)
-    addUrl(`/${locale}/destinations`, currentDate, 'daily', 0.8)
+    addUrl(`${prefix}/about`, currentDate, 'monthly', 0.7)
+    addUrl(`${prefix}/contact`, currentDate, 'monthly', 0.7)
+    addUrl(`${prefix}/destinations`, currentDate, 'daily', 0.8)
 
     // Blog post pages - use date from frontmatter
     for (const slug of postSlugs) {
@@ -109,7 +110,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         }
       }
 
-      addUrl(`/${locale}/${slug}`, lastModified, 'weekly', 0.7)
+      addUrl(`${prefix}/${slug}`, lastModified, 'weekly', 0.7)
     }
 
     // Location pages (countries) - only add if there are posts for this country in this locale
@@ -143,7 +144,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
           }
         }
 
-        addUrl(`/${locale}/${countrySlug}`, lastModified, 'weekly', 0.6)
+        addUrl(`${prefix}/${countrySlug}`, lastModified, 'weekly', 0.6)
       }
     }
 
@@ -202,7 +203,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         }
       }
 
-      addUrl(`/${locale}/${citySlug}`, lastModified, 'weekly', 0.6)
+      addUrl(`${prefix}/${citySlug}`, lastModified, 'weekly', 0.6)
     }
   }
 

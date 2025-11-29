@@ -106,6 +106,14 @@ export default function FilteredPostsGrid({ posts, locale, isCountry = false }: 
     setSelectedCities(new Set())
   }
 
+  // Helper to generate localized path
+  const getPath = (path: string) => {
+    if (locale === 'ro') {
+      return path
+    }
+    return `/${locale}${path}`
+  }
+
   // If no categories available, just show posts without filters
   if (availableCategories.length === 0) {
     return (
@@ -120,10 +128,10 @@ export default function FilteredPostsGrid({ posts, locale, isCountry = false }: 
           return (
             <Link
               key={post.frontmatter.slug}
-              href={`/${locale}/${post.frontmatter.slug}`}
+              href={getPath(`/${post.frontmatter.slug}`)}
               className={`group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl ${hasAnchors
-                  ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-xl'
-                  : ''
+                ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-xl'
+                : ''
                 }`}
             >
               <div className="relative h-80 overflow-hidden">
@@ -224,8 +232,8 @@ export default function FilteredPostsGrid({ posts, locale, isCountry = false }: 
                       key={city}
                       onClick={() => toggleCity(city)}
                       className={`inline-flex items-center flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap border-2 ${isSelected
-                          ? 'bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 border-primary font-semibold'
-                          : 'bg-muted text-muted-foreground hover:bg-muted/80 border-transparent hover:border-muted-foreground/20'
+                        ? 'bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 border-primary font-semibold'
+                        : 'bg-muted text-muted-foreground hover:bg-muted/80 border-transparent hover:border-muted-foreground/20'
                         }`}
                     >
                       {city}
@@ -249,8 +257,8 @@ export default function FilteredPostsGrid({ posts, locale, isCountry = false }: 
                     key={city}
                     onClick={() => toggleCity(city)}
                     className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all border-2 ${isSelected
-                        ? 'bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 border-primary font-semibold'
-                        : 'bg-muted text-muted-foreground hover:bg-muted/80 border-transparent hover:border-muted-foreground/20'
+                      ? 'bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 border-primary font-semibold'
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80 border-transparent hover:border-muted-foreground/20'
                       }`}
                   >
                     {city}
@@ -287,8 +295,8 @@ export default function FilteredPostsGrid({ posts, locale, isCountry = false }: 
                     key={code}
                     onClick={() => toggleCategory(code)}
                     className={`inline-flex items-center flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap ${isSelected
-                        ? 'bg-primary text-primary-foreground shadow-md hover:bg-primary/90'
-                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                      ? 'bg-primary text-primary-foreground shadow-md hover:bg-primary/90'
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
                       }`}
                   >
                     {getCategoryName(code, locale)}
@@ -313,8 +321,8 @@ export default function FilteredPostsGrid({ posts, locale, isCountry = false }: 
                     key={code}
                     onClick={() => toggleCategory(code)}
                     className={`inline-flex items-center flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all whitespace-nowrap ${isSelected
-                        ? 'bg-primary text-primary-foreground shadow-md hover:bg-primary/90'
-                        : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                      ? 'bg-primary text-primary-foreground shadow-md hover:bg-primary/90'
+                      : 'bg-muted text-muted-foreground hover:bg-muted/80'
                       }`}
                   >
                     {getCategoryName(code, locale)}
@@ -339,8 +347,8 @@ export default function FilteredPostsGrid({ posts, locale, isCountry = false }: 
                 key={code}
                 onClick={() => toggleCategory(code)}
                 className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all ${isSelected
-                    ? 'bg-primary text-primary-foreground shadow-md hover:bg-primary/90'
-                    : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                  ? 'bg-primary text-primary-foreground shadow-md hover:bg-primary/90'
+                  : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
               >
                 {getCategoryName(code, locale)}
@@ -377,10 +385,10 @@ export default function FilteredPostsGrid({ posts, locale, isCountry = false }: 
             return (
               <Link
                 key={post.frontmatter.slug}
-                href={`/${locale}/${post.frontmatter.slug}`}
+                href={getPath(`/${post.frontmatter.slug}`)}
                 className={`group relative overflow-hidden rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl ${hasAnchors
-                    ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-xl'
-                    : ''
+                  ? 'ring-2 ring-primary ring-offset-2 ring-offset-background shadow-xl'
+                  : ''
                   }`}
               >
                 <div className="relative h-80 overflow-hidden">
